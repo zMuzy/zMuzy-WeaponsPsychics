@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet build MuzyWeaponsPhysics.csproj -c Release -o out
+
+      # Same layout as the server: unzip into game/csgo/.
+      - name: Package
+        run: |
+          mkdir -p pkg/addons/counterstrikesharp/plugins/MuzyWeaponsPhysics
+          cp out/MuzyWeaponsPhysics.dll pkg/addons/counterstrikesharp/plugins/MuzyWeaponsPhysics/
+          cd pkg && zip -r ../MuzyWeaponsPhysics-${{ github.ref_name }}.zip addons
+
+      # Release notes are this version's section of CHANGELOG.md.
+      - name: Release notes
+        run: |
+          awk -v v="${GITHUB_REF_NAME#v}" '
+            /^## / { if (found) exit; if (index($0, "[" v "]")) { found = 1; next } }
+            found { print }
+          ' CHANGELOG.md > notes.md
+          cat notes.md
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: zMuzy WeaponPhysics ${{ github.ref_name }}
+          body_path: notes.md
+          files: MuzyWeaponsPhysics-${{ github.ref_name }}.zip

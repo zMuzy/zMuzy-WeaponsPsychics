@@ -1,0 +1,21 @@
+# build output
+bin/
+obj/
+builds/
+dropin/
+deploy_runtime_only/
+deploy_runtime_only.zip
+*.user
+.vs/
+
+# local-only material that must not be published
+Backups/
+**/Backups/
+debug-logs-*/
+*.rar
+*.bak*
+
+# CI output
+out/
+pkg/
+*.zip

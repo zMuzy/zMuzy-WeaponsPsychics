@@ -1,0 +1,41 @@
+name: Bug report
+description: Something in zMuzy WeaponPhysics doesn't work as described.
+labels: [bug]
+body:
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: From `css_plugins list`.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: css-version
+    attributes:
+      label: CounterStrikeSharp version
+      placeholder: "1.0.379"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Server log
+      description: Lines from the server console or `addons/counterstrikesharp/logs` around the problem.
+      render: text
